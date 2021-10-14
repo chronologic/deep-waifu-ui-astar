@@ -5,9 +5,8 @@ import { FilePdfFilled } from '@ant-design/icons';
 import jsPdf from 'jspdf';
 import { useHistory } from 'react-router-dom';
 
-import { SHARE_URL, SOLANA_ENV } from '../../env';
+import { SHARE_URL } from '../../env';
 import { useWaifu } from '../../hooks';
-import sol from '../../img/solana-icon.svg';
 import { flamingo, whitesmoke, bluegrey } from '../colors';
 import { AppHeader, Confetti } from '../shared';
 import { OrderPillow } from '../pillow';
@@ -65,15 +64,8 @@ export default function CertificateHeader() {
                   </div>
                   <div className="mintBtn">
                     <Space direction="horizontal" size="large">
-                      <Button
-                        type="link"
-                        danger
-                        icon={<img width="14px" className="anticon" src={sol} alt="sol" />}
-                        href={`https://explorer.solana.com/tx/${state.tx}?cluster=${SOLANA_ENV}`}
-                        target="_blank"
-                        rel="noreferer noopener"
-                      >
-                        View on Solana Explorer
+                      <Button type="link" danger target="_blank" rel="noreferer noopener">
+                        View on Explorer
                       </Button>
                       <Button id="print" onClick={handlePrintPDF} type="link" danger icon={<FilePdfFilled />}>
                         Download PDF

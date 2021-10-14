@@ -36,11 +36,9 @@ export default function MainContent() {
                 <Title className="titleFeatures">Mint NFT</Title>
                 <Image preview={false} src={'../img/waifu/waifu9.png'} />
                 <Text className="text16">Trade exlusive, high-quality NFTs minted on the blockchain.</Text>
-                <div className="solana">
+                <div className="shiden">
                   <Text className="text12">Powered by</Text>
-                  <a href="https://solana.com/" target="_blank" rel="noreferrer">
-                    <Image preview={false} src={'../img/solana-logo.svg'} />
-                  </a>
+                  <a href="https://shiden.com/" target="_blank" rel="noreferrer"></a>
                 </div>
               </Col>
               <Col span={8}>
@@ -148,7 +146,7 @@ const Features = styled.div`
   max-width: 960px;
   background: ${whitesmoke};
 
-  .solana {
+  .shiden {
     margin-top: 2em;
   }
 

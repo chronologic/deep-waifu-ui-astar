@@ -2,12 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { Typography, Space, Button, Image, Row, Col, Card, Input, Switch, Form, message } from 'antd';
-import { useWallet } from '@solana/wallet-adapter-react';
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import * as anchor from '@project-serum/anchor';
-import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 
-import { usePaymentContract, useWaifu } from '../../hooks';
+import { useWaifu } from '../../hooks';
 import { htmlToDataUrl, sleep, srcToFile } from '../../utils';
 import { apiService } from '../../services';
 import { LAMPORTS_PER_DAY, SECOND_MILLIS } from '../../constants';
@@ -33,13 +29,10 @@ export default function MintForm() {
   const history = useHistory();
   const [form] = Form.useForm();
   const { state, onUpdateState, onResetState } = useWaifu();
-  const { publicKey, connected } = useWallet();
-  const { setVisible } = useWalletModal();
-  const { payForMint, fetchState } = usePaymentContract();
   const [resumeMint, setResumeMint] = useState(false);
   const [paying, setPaying] = useState(false);
   const [minting, setMinting] = useState(false);
-  const [priceSol, setPriceSol] = useState(0);
+  const [priceSdn, setPriceSdn] = useState(0);
   const [priceDay, setPriceDay] = useState(0);
   const [dayPayment, setDayPayment] = useState(false);
   const [certificateParams, setCertificateParams] = useState<ICertificateParams>({} as any);
@@ -73,11 +66,6 @@ export default function MintForm() {
   const handleMint = useCallback(async () => {
     const { name, email } = await form.validateFields();
 
-    if (!connected) {
-      setResumeMint(true);
-      return setVisible(true);
-    }
-
     try {
       (window as any).heap.identify(email);
     } catch (e) {
@@ -86,20 +74,16 @@ export default function MintForm() {
 
     try {
       setPaying(true);
-      const { tx, payer, id } = await payForMint(dayPayment);
       message.success('Payment successful!');
       setMinting(true);
-      const certificate = await getCertificateFile({ id, name, holder: payer });
-      await apiService.mint({ tx, waifu: state.waifu!, certificate, name });
-      const res = await waitForMint(tx);
 
       onUpdateState({
-        id: res.id,
-        tx: res.tx,
-        metadataLink: res.metadataLink,
-        certificateLink: res.certificateLink,
+        id: 1,
+        tx: 'asd',
+        metadataLink: 'zxc',
+        certificateLink: 'vbn',
         name,
-        holder: publicKey?.toBase58(),
+        holder: '',
       });
 
       message.success('Your Waifu has been minted!');
@@ -110,41 +94,12 @@ export default function MintForm() {
       setPaying(false);
       setMinting(false);
     }
-  }, [
-    connected,
-    dayPayment,
-    form,
-    getCertificateFile,
-    history,
-    onUpdateState,
-    payForMint,
-    publicKey,
-    setVisible,
-    state.waifu,
-    waitForMint,
-  ]);
-
-  useEffect(() => {
-    if (connected && resumeMint) {
-      setResumeMint(false);
-      handleMint();
-    }
-  }, [connected, handleMint, resumeMint]);
+  }, [dayPayment, form, getCertificateFile, history, onUpdateState, state.waifu, waitForMint]);
 
   const handleReset = useCallback(() => {
     onResetState();
     history.push('/');
   }, [history, onResetState]);
-
-  useEffect(() => {
-    async function fetchPrices() {
-      const state = await fetchState();
-      setPriceSol(state.priceLamports.mul(new anchor.BN(100)).div(new anchor.BN(LAMPORTS_PER_SOL)).toNumber() / 100);
-      setPriceDay(state.priceDay.mul(new anchor.BN(100)).div(new anchor.BN(LAMPORTS_PER_DAY)).toNumber() / 100);
-    }
-
-    fetchPrices();
-  }, [fetchState]);
 
   return (
     <Form form={form}>
@@ -216,10 +171,9 @@ export default function MintForm() {
         <Space direction="vertical" size="middle">
           <div className="switch">
             <Space direction="horizontal" size="large">
-              <Image className="solLogo" height={14} preview={false} src={'../img/solana-logo-red.svg'} />
               <SwitchWrapper>
                 <Switch
-                  checkedChildren={`Pay ${priceSol} SOL`}
+                  checkedChildren={`Pay ${priceSdn} SDN`}
                   unCheckedChildren={`Pay ${priceDay} DAY`}
                   checked={!dayPayment}
                   onChange={(checked) => setDayPayment(!checked)}
@@ -278,7 +232,7 @@ const MintButtonWrapper = styled.div`
   .ant-switch-checked:focus {
     box-shadow: 0 0 0 2px rgb(235 87 87 / 20%);
   }
-  .solLogo {
+  .astarLogo {
     margin-top: 2px;
   }
 `;

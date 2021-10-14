@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Layout, Image } from 'antd';
 import { useHistory } from 'react-router-dom';
 
-import { usePaymentContract, useWaifu } from '../../hooks';
+import { useWaifu } from '../../hooks';
 import { flamingo } from '../colors';
 import { AppHeader } from '../shared';
 import ImageUploader from './ImageUploader';
@@ -14,7 +14,6 @@ const { Content } = Layout;
 export default function MainHeader() {
   const history = useHistory();
   const { onUpdateState } = useWaifu();
-  const { fetchState } = usePaymentContract();
   const [ready, setReady] = useState(false);
   const [soldOut, setSoldOut] = useState(false);
 
@@ -33,15 +32,12 @@ export default function MainHeader() {
 
   useEffect(() => {
     async function init() {
-      const state = await fetchState();
       setReady(true);
-      if (state.count >= state.maxCount) {
-        setSoldOut(true);
-      }
+      setSoldOut(true);
     }
 
     init();
-  }, [fetchState]);
+  }, []);
 
   return (
     <Layout>

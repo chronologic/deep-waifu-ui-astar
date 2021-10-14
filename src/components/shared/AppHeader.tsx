@@ -1,19 +1,15 @@
 import styled from 'styled-components';
 import { Typography, Layout, Divider } from 'antd';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { useWallet } from '@solana/wallet-adapter-react';
 
 import { useWaifu } from '../../hooks';
-import { SOLANA_ENV } from '../../env';
 import { flamingo } from '../colors';
 
 const { Header } = Layout;
 const { Title } = Typography;
 
-const isMainnet = SOLANA_ENV.startsWith('mainnet');
+const isMainnet = false;
 
 export default function AppHeader() {
-  const wallet = useWallet();
   const { onResetState } = useWaifu();
 
   return (
@@ -28,10 +24,7 @@ export default function AppHeader() {
               <Title>ディープ</Title>
               <Title className="titleRed">ワイフ</Title>
             </a>
-            <ButtonWrapper>
-              {!isMainnet && <div className="envLabel">{SOLANA_ENV}</div>}
-              <WalletMultiButton className={wallet.connected ? 'walletConnector' : 'walletConnector hidden'} />
-            </ButtonWrapper>
+            <ButtonWrapper></ButtonWrapper>
           </CustomMenu>
         </Header>
       </CustomHeader>
