@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { Typography, Space, Button, Image, Row, Col, Card, Input, Switch, Form, message } from 'antd';
+import { Typography, Space, Button, Image, Row, Col, Card, Input, Badge, Form, message } from 'antd';
 
 import { useWaifu } from '../../hooks';
 import { htmlToDataUrl, sleep, srcToFile } from '../../utils';
@@ -170,15 +170,11 @@ export default function MintForm() {
       <MintButtonWrapper>
         <Space direction="vertical" size="middle">
           <div className="switch">
-            <Space direction="horizontal" size="large">
-              <SwitchWrapper>
-                <Switch
-                  checkedChildren={`Pay ${priceSdn} SDN`}
-                  unCheckedChildren={`Pay ${priceDay} DAY`}
-                  checked={!dayPayment}
-                  onChange={(checked) => setDayPayment(!checked)}
-                />
-              </SwitchWrapper>
+            <Space direction="horizontal">
+              <Image className="shidenLogo" height={36} preview={false} src={'../img/shiden-logo-red.svg'} />
+              <BadgeWrapper>
+                <Badge count={`Pay ${priceSdn} SDN`} style={{ backgroundColor: 'black' }} />
+              </BadgeWrapper>
             </Space>
           </div>
           <Button type="primary" size="large" danger loading={minting || paying} onClick={handleMint}>
@@ -204,7 +200,7 @@ const CertificateForm = styled.div`
   text-align: center;
 `;
 
-const SwitchWrapper = styled.div`
+const BadgeWrapper = styled.div`
   min-width: 110px;
 `;
 
@@ -221,20 +217,7 @@ const CertificateImage = styled.div`
 
 const MintButtonWrapper = styled.div`
   text-align: center;
-  margin: 2em 0;
-
-  .ant-switch {
-    background-color: ${flamingo};
-  }
-  .ant-switch-checked {
-    background-color: black;
-  }
-  .ant-switch-checked:focus {
-    box-shadow: 0 0 0 2px rgb(235 87 87 / 20%);
-  }
-  .astarLogo {
-    margin-top: 2px;
-  }
+  margin: 1em 0 2em 0;
 `;
 
 const CertificateContainer = styled.div`

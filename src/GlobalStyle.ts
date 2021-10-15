@@ -57,6 +57,9 @@ const GlobalStyle = styled.div`
     color: ${flamingo};
     border-color: ${flamingo};
   }
+  .shidenLogo {
+    margin-top: 4px;
+  }
 `;
 
 export default GlobalStyle;

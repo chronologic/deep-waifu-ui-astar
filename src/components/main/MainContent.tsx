@@ -35,10 +35,12 @@ export default function MainContent() {
                 <Title className="titleFeaturesRed">(´｡• ω •｡`)</Title>
                 <Title className="titleFeatures">Mint NFT</Title>
                 <Image preview={false} src={'../img/waifu/waifu9.png'} />
-                <Text className="text16">Trade exlusive, high-quality NFTs minted on the blockchain.</Text>
+                <Text className="text16">Trade exclusive, high-quality NFTs minted on the blockchain.</Text>
                 <div className="shiden">
                   <Text className="text12">Powered by</Text>
-                  <a href="https://shiden.com/" target="_blank" rel="noreferrer"></a>
+                  <a href="https://shiden.astar.network/" target="_blank" rel="noreferrer">
+                    <Image preview={false} src={'../img/shiden-logo.svg'} />
+                  </a>
                 </div>
               </Col>
               <Col span={8}>
