@@ -5,13 +5,14 @@ import { FilePdfFilled } from '@ant-design/icons';
 import jsPdf from 'jspdf';
 import { useHistory } from 'react-router-dom';
 
-import { SHARE_URL } from '../../env';
+import { CHAIN_ID, SHARE_URL } from '../../env';
 import { useWaifu } from '../../hooks';
 import { flamingo, whitesmoke, bluegrey } from '../colors';
 import { AppHeader, Confetti } from '../shared';
 import { OrderPillow } from '../pillow';
 import { htmlToDataUrl } from '../../utils';
 import Certificate from './Certificate';
+import { EXPLORERS } from '../../constants';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -34,6 +35,10 @@ export default function CertificateHeader() {
     const certId = state.certificateLink?.split('/').reverse()[0];
     return `https://twitter.com/intent/tweet?text=Check%20out%20my%20%23DeepWaifu!%20%0A%0A${SHARE_URL}/c/${certId}`;
   }, [state.certificateLink]);
+
+  const explorerUrl = useMemo(() => {
+    return EXPLORERS[CHAIN_ID] + 'tx/' + state.tx;
+  }, [state.tx]);
 
   return (
     <Layout>
@@ -64,7 +69,7 @@ export default function CertificateHeader() {
                   </div>
                   <div className="mintBtn">
                     <Space direction="horizontal" size="large">
-                      <Button type="link" danger target="_blank" rel="noreferer noopener">
+                      <Button type="link" danger target="_blank" rel="noreferer noopener" href={explorerUrl}>
                         View on Explorer
                       </Button>
                       <Button id="print" onClick={handlePrintPDF} type="link" danger icon={<FilePdfFilled />}>

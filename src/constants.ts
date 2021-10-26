@@ -6,3 +6,8 @@ export const CHAINS = {
   SHIBUYA: 81,
   LOCALNET: 4369,
 };
+
+export const EXPLORERS = {
+  [CHAINS.SHIBUYA]: 'https://shibuya.subscan.io/',
+  [CHAINS.SHIDEN]: 'https://shiden.subscan.io/',
+};
