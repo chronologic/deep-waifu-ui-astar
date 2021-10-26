@@ -80,28 +80,28 @@ export default function MintForm() {
       const { tx, payer, id } = await onPayForMint();
       message.success('Payment successful!');
       setMinting(true);
-      // const certificate = await getCertificateFile({ id, name, holder: payer });
-      // await apiService.mint({ tx, waifu: state.waifu!, certificate, name });
-      // const res = await waitForMint(tx);
+      const certificate = await getCertificateFile({ id, name, holder: payer });
+      await apiService.mint({ tx, waifu: state.waifu!, certificate, name });
+      const res = await waitForMint(tx);
 
-      // onUpdateState({
-      //   id: 1,
-      //   tx: 'asd',
-      //   metadataLink: 'zxc',
-      //   certificateLink: 'vbn',
-      //   name,
-      //   holder: '',
-      // });
+      onUpdateState({
+        id: res.id,
+        tx: res.tx,
+        metadataLink: res.metadataLink,
+        certificateLink: res.certificateLink,
+        name,
+        holder: payer,
+      });
 
-      // message.success('Your Waifu has been minted!');
-      // history.push('/certificate');
+      message.success('Your Waifu has been minted!');
+      history.push('/certificate');
     } catch (e) {
       message.error((e as any).message);
     } finally {
       setPaying(false);
       setMinting(false);
     }
-  }, [connect, connected, form, onPayForMint]);
+  }, [connect, connected, form, getCertificateFile, history, onPayForMint, onUpdateState, state.waifu, waitForMint]);
 
   useEffect(() => {
     if (connected && resumeMint) {
