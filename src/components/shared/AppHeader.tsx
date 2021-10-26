@@ -1,16 +1,31 @@
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import { Typography, Layout, Divider } from 'antd';
 
-import { useWaifu } from '../../hooks';
+import { useWaifu, useWallet } from '../../hooks';
 import { flamingo } from '../colors';
+import { CHAIN_ID } from '../../env';
+import { CHAINS } from '../../constants';
 
 const { Header } = Layout;
 const { Title } = Typography;
 
-const isMainnet = false;
+const isProd = CHAIN_ID === CHAINS.SHIDEN;
+
+const chainName = Object.keys(CHAINS)
+  .find((key) => (CHAINS as any)[key] === CHAIN_ID)
+  ?.toLowerCase();
 
 export default function AppHeader() {
+  const { address } = useWallet();
   const { onResetState } = useWaifu();
+
+  const addressShort = useMemo(() => {
+    if (address) {
+      return address.substr(0, 6) + '...' + address.substr(-4);
+    }
+    return '';
+  }, [address]);
 
   return (
     <FixedHeader>
@@ -24,7 +39,10 @@ export default function AppHeader() {
               <Title>ディープ</Title>
               <Title className="titleRed">ワイフ</Title>
             </a>
-            <ButtonWrapper></ButtonWrapper>
+            <ButtonWrapper>
+              {!isProd && <div className="envLabel">{chainName}</div>}
+              {addressShort}
+            </ButtonWrapper>
           </CustomMenu>
         </Header>
       </CustomHeader>
