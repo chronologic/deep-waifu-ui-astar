@@ -11,7 +11,7 @@ export default function SoldOut() {
       <Title className="red">
         ･ﾟ･(｡{'>'}ω{'<'}｡)･ﾟ･
       </Title>
-      <Text className="text">COMING SOON!</Text>
+      <Text className="text">Sold out!</Text>
     </Container>
   );
 }

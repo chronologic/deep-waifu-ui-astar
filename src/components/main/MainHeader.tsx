@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Layout, Image } from 'antd';
 import { useHistory } from 'react-router-dom';
 
-import { useWaifu } from '../../hooks';
+import { useDeepWaifuContract, useWaifu } from '../../hooks';
 import { flamingo } from '../colors';
 import { AppHeader } from '../shared';
 import ImageUploader from './ImageUploader';
@@ -16,6 +16,7 @@ export default function MainHeader() {
   const { onUpdateState } = useWaifu();
   const [ready, setReady] = useState(false);
   const [soldOut, setSoldOut] = useState(false);
+  const { maxItems, itemsLeft } = useDeepWaifuContract();
 
   const handleSelfieUploadDone = useCallback(
     async (selfie: File) => {
@@ -31,13 +32,11 @@ export default function MainHeader() {
   );
 
   useEffect(() => {
-    async function init() {
+    if (maxItems > 0) {
       setReady(true);
-      setSoldOut(true);
+      setSoldOut(itemsLeft === 0);
     }
-
-    init();
-  }, []);
+  }, [maxItems, itemsLeft]);
 
   return (
     <Layout>

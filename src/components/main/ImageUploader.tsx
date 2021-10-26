@@ -6,6 +6,7 @@ import Cropper from 'react-easy-crop';
 
 import { fileToDataUrl, srcToFile } from '../../utils';
 import getCroppedImg from './cropImage';
+import { NftCounter } from '../shared';
 
 const { Dragger } = Upload;
 const { Title } = Typography;
@@ -73,6 +74,9 @@ export default function ImageUploader({ disabled, onUploadDone }: IProps) {
         </p>
         <Title className="titleRed">(=^･ω･^=)</Title>
         <Title>Upload a Selfie Here</Title>
+        <NftCounter />
+        <br />
+        <br />
         <p>Photos you upload will NOT BE PUBLISHED</p>
       </Dragger>
       <Modal visible={showCropper} destroyOnClose closable={false} width={400} footer={footer}>

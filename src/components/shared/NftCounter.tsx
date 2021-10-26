@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
 import { Typography } from 'antd';
 
-import { SECOND_MILLIS } from '../../constants';
+import { useDeepWaifuContract } from '../../hooks';
 
 const { Text } = Typography;
 
 export default function NftCounter() {
-  const [itemsLeft, setItemsLeft] = useState(0);
+  const { itemsLeft } = useDeepWaifuContract();
 
   return (
     <Text className="text14">

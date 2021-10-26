@@ -1,11 +1,20 @@
 import React from 'react';
 
-import { WaifuProvider } from './contexts';
+import { DeepWaifuContractProvider, WaifuProvider, WalletProvider } from './contexts';
+import { CHAIN_ID, NETWORK_URL } from './env';
 
 interface IProps {
   children: React.ReactNode;
 }
 
+console.log({ CHAIN_ID, NETWORK_URL });
+
 export default function Providers({ children }: IProps) {
-  return <WaifuProvider>{children}</WaifuProvider>;
+  return (
+    <WalletProvider>
+      <DeepWaifuContractProvider>
+        <WaifuProvider>{children}</WaifuProvider>
+      </DeepWaifuContractProvider>
+    </WalletProvider>
+  );
 }

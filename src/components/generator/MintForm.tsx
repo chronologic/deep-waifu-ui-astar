@@ -2,16 +2,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { Typography, Space, Button, Image, Row, Col, Card, Input, Badge, Form, message } from 'antd';
+import { ethers } from 'ethers';
 
-import { useWaifu } from '../../hooks';
+import { useDeepWaifuContract, useWaifu, useWallet } from '../../hooks';
 import { htmlToDataUrl, sleep, srcToFile } from '../../utils';
 import { apiService } from '../../services';
-import { LAMPORTS_PER_DAY, SECOND_MILLIS } from '../../constants';
+import { SECOND_MILLIS } from '../../constants';
 import { IMintStatus } from '../../types';
-import { flamingo } from '../colors';
 import { Certificate } from '../certificate';
-import NftCounter from './NftCounter';
-import { KaomojiLoader } from '../shared';
+import { KaomojiLoader, NftCounter } from '../shared';
 
 const { Title, Text } = Typography;
 
@@ -32,10 +31,9 @@ export default function MintForm() {
   const [resumeMint, setResumeMint] = useState(false);
   const [paying, setPaying] = useState(false);
   const [minting, setMinting] = useState(false);
-  const [priceSdn, setPriceSdn] = useState(0);
-  const [priceDay, setPriceDay] = useState(0);
-  const [dayPayment, setDayPayment] = useState(false);
   const [certificateParams, setCertificateParams] = useState<ICertificateParams>({} as any);
+  const { connected, connect } = useWallet();
+  const { priceWei, onPayForMint } = useDeepWaifuContract();
 
   const waitForMint = useCallback(async (tx: string): Promise<IMintStatus> => {
     return new Promise(async (resolve, reject) => {
@@ -66,6 +64,11 @@ export default function MintForm() {
   const handleMint = useCallback(async () => {
     const { name, email } = await form.validateFields();
 
+    if (!connected) {
+      setResumeMint(true);
+      return connect();
+    }
+
     try {
       (window as any).heap.identify(email);
     } catch (e) {
@@ -74,27 +77,38 @@ export default function MintForm() {
 
     try {
       setPaying(true);
+      const { tx, payer, id } = await onPayForMint();
       message.success('Payment successful!');
       setMinting(true);
+      // const certificate = await getCertificateFile({ id, name, holder: payer });
+      // await apiService.mint({ tx, waifu: state.waifu!, certificate, name });
+      // const res = await waitForMint(tx);
 
-      onUpdateState({
-        id: 1,
-        tx: 'asd',
-        metadataLink: 'zxc',
-        certificateLink: 'vbn',
-        name,
-        holder: '',
-      });
+      // onUpdateState({
+      //   id: 1,
+      //   tx: 'asd',
+      //   metadataLink: 'zxc',
+      //   certificateLink: 'vbn',
+      //   name,
+      //   holder: '',
+      // });
 
-      message.success('Your Waifu has been minted!');
-      history.push('/certificate');
+      // message.success('Your Waifu has been minted!');
+      // history.push('/certificate');
     } catch (e) {
       message.error((e as any).message);
     } finally {
       setPaying(false);
       setMinting(false);
     }
-  }, [dayPayment, form, getCertificateFile, history, onUpdateState, state.waifu, waitForMint]);
+  }, [connect, connected, form, onPayForMint]);
+
+  useEffect(() => {
+    if (connected && resumeMint) {
+      setResumeMint(false);
+      handleMint();
+    }
+  }, [connected, handleMint, resumeMint]);
 
   const handleReset = useCallback(() => {
     onResetState();
@@ -173,7 +187,7 @@ export default function MintForm() {
             <Space direction="horizontal">
               <Image className="shidenLogo" height={36} preview={false} src={'../img/shiden-logo-red.svg'} />
               <BadgeWrapper>
-                <Badge count={`Pay ${priceSdn} SDN`} style={{ backgroundColor: 'black' }} />
+                <Badge count={`Pay ${ethers.utils.formatEther(priceWei)} SDN`} style={{ backgroundColor: 'black' }} />
               </BadgeWrapper>
             </Space>
           </div>
