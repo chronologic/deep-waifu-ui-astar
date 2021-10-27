@@ -5,14 +5,14 @@ import { FilePdfFilled } from '@ant-design/icons';
 import jsPdf from 'jspdf';
 import { useHistory } from 'react-router-dom';
 
-import { CHAIN_ID, SHARE_URL } from '../../env';
+import { SHARE_URL } from '../../env';
 import { useWaifu } from '../../hooks';
+import { htmlToDataUrl } from '../../utils';
+import { NETWORK } from '../../constants';
 import { flamingo, whitesmoke, bluegrey } from '../colors';
 import { AppHeader, Confetti } from '../shared';
 import { OrderPillow } from '../pillow';
-import { htmlToDataUrl } from '../../utils';
 import Certificate from './Certificate';
-import { EXPLORERS } from '../../constants';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -37,7 +37,7 @@ export default function CertificateHeader() {
   }, [state.certificateLink]);
 
   const explorerUrl = useMemo(() => {
-    return EXPLORERS[CHAIN_ID] + 'tx/' + state.tx;
+    return NETWORK.chainParams.blockExplorerUrls[0] + 'tx/' + state.tx;
   }, [state.tx]);
 
   return (

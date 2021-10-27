@@ -5,16 +5,12 @@ import { Typography, Layout, Divider } from 'antd';
 import { useWaifu, useWallet } from '../../hooks';
 import { flamingo } from '../colors';
 import { CHAIN_ID } from '../../env';
-import { CHAINS } from '../../constants';
+import { NETWORK } from '../../constants';
 
 const { Header } = Layout;
 const { Title } = Typography;
 
-const isProd = CHAIN_ID === CHAINS.SHIDEN;
-
-const chainName = Object.keys(CHAINS)
-  .find((key) => (CHAINS as any)[key] === CHAIN_ID)
-  ?.toLowerCase();
+const isProd = CHAIN_ID === NETWORK.chainId;
 
 export default function AppHeader() {
   const { address } = useWallet();
@@ -40,7 +36,7 @@ export default function AppHeader() {
               <Title className="titleRed">ワイフ</Title>
             </a>
             <ButtonWrapper>
-              {!isProd && <div className="envLabel">{chainName}</div>}
+              {!isProd && <div className="envLabel">{NETWORK.chainParams.chainName}</div>}
               {addressShort}
             </ButtonWrapper>
           </CustomMenu>
