@@ -92,8 +92,6 @@ export const WalletProvider: React.FC<IProps> = ({ children }: IProps) => {
     });
   }, [resetWallet]);
 
-  console.log({ provider, signer, address });
-
   return (
     <WalletContext.Provider
       value={{

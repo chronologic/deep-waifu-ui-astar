@@ -24,7 +24,7 @@ export const NETWORKS = {
   SHIDEN: {
     chainId: 336,
     chainParams: {
-      chainId: ethers.BigNumber.from(336).toHexString(),
+      chainId: decToUnpaddedHex(336),
       chainName: 'Shiden',
       nativeCurrency: {
         name: 'Shiden',
@@ -38,7 +38,7 @@ export const NETWORKS = {
   SHIBUYA: {
     chainId: 81,
     chainParams: {
-      chainId: ethers.BigNumber.from(81).toHexString(),
+      chainId: decToUnpaddedHex(81),
       chainName: 'Shibuya',
       nativeCurrency: {
         name: 'Shibuya',
@@ -52,7 +52,7 @@ export const NETWORKS = {
   LOCALNET: {
     chainId: 4369,
     chainParams: {
-      chainId: ethers.BigNumber.from(4369).toHexString(),
+      chainId: decToUnpaddedHex(4369),
       chainName: 'Shiden Local',
       nativeCurrency: {
         name: 'Shiden Local',
@@ -64,6 +64,13 @@ export const NETWORKS = {
     },
   },
 };
+
+// metamask expects unpadded hex string but ethers sometimes makes padded strings
+function decToUnpaddedHex(dec: number): string {
+  const paddedHex = ethers.BigNumber.from(dec).toHexString();
+
+  return paddedHex.replace(/x0+/, 'x');
+}
 
 const networkKey = Object.keys(NETWORKS).find((key) => (NETWORKS as any)[key].chainId === CHAIN_ID) as string;
 
