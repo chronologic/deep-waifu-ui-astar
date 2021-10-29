@@ -187,7 +187,7 @@ export default function MintForm() {
             <Space direction="horizontal">
               <Image className="shidenLogo" height={36} preview={false} src={'../img/shiden-logo-red.svg'} />
               <BadgeWrapper>
-                <Badge count={`Pay ${ethers.utils.formatEther(priceWei)} SBY`} style={{ backgroundColor: 'black' }} />
+                <Badge count={`Pay ${ethers.utils.formatEther(priceWei)} SDN`} style={{ backgroundColor: 'black' }} />
               </BadgeWrapper>
             </Space>
           </div>
