@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { Typography, Layout, Divider } from 'antd';
+import { Typography, Layout, Divider, Badge } from 'antd';
 
 import { useWaifu, useWallet } from '../../hooks';
 import { flamingo } from '../colors';
@@ -37,7 +37,7 @@ export default function AppHeader() {
             </a>
             <ButtonWrapper>
               {!isProd && <div className="envLabel">{NETWORK.chainParams.chainName}</div>}
-              {addressShort}
+              <Badge count={addressShort} />
             </ButtonWrapper>
           </CustomMenu>
         </Header>
